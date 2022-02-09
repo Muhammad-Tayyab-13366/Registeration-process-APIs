@@ -47,7 +47,8 @@ class UserController extends Controller
         }
         else 
         {
-            
+             dd(auth()->user()->id);
+            return response(['test' =>'under progress']);
             $tokenarray = explode('|', $req->bearerToken());
             $tokenid = $tokenarray[0];
             $gettokendetail  = DB::table('personal_access_tokens')

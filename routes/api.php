@@ -13,8 +13,8 @@ use App\Http\Controllers\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::group(['middleware' => 'auth:sanctum'], function(){
+// test_brach check commit
+Route::middleware('auth:sanctum')->group(function () {
     //All secure URL's
     Route::post("/UpdateProfile",[UserController::class,'UpdateProfile']);
 
