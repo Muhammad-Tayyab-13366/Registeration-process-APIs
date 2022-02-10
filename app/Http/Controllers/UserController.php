@@ -32,11 +32,12 @@ class UserController extends Controller
 
     public function UpdateProfile(Request $req)
     {
-       
+        
+        
         $validate = Validator::make($req->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'user_name' => ['required', 'string', 'max:20', 'min:4', 'unique:users'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'user_name' => ['required', 'string', 'max:20', 'min:4', 'unique:users,user_name,'.auth()->user()->id],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,'.auth()->user()->id],
             'password' => ['required', 'string', 'min:5'],
             //'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg'],
         ]);
@@ -47,19 +48,9 @@ class UserController extends Controller
         }
         else 
         {
-            
-            $tokenarray = explode('|', $req->bearerToken());
-            $tokenid = $tokenarray[0];
-            $gettokendetail  = DB::table('personal_access_tokens')
-                                        ->where('id', '=', $tokenid)->get();
-            
-            $user_id = 0;
-            foreach($gettokendetail as $info)
-            {
-               $user_id = $info->tokenable_id;
-            }
+        
 
-            $user = User::findorFail($user_id);
+            $user = User::findorFail($user_id = auth()->user()->id);
            
             $user->name = $req->name;
             $user->user_name = $req->user_name;
